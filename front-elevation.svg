@@ -1,0 +1,151 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 720" width="1100" height="720">
+  <defs>
+    <style>
+      text { font-family: system-ui, sans-serif; }
+      .title { font-size: 18px; fill: #111; font-weight: 800; text-anchor: middle; }
+      .subtitle { font-size: 11px; fill: #888; text-anchor: middle; }
+      .dim { font-size: 11px; fill: #d44; font-weight: 600; }
+      .label { font-size: 9px; fill: #555; text-anchor: middle; }
+      .mat-siding { fill: #e8e4dd; stroke: #ccc; stroke-width: 0.3; }
+      .mat-roof { fill: #4a4a4a; stroke: #333; stroke-width: 1; }
+      .mat-trim { fill: #f5f0ea; stroke: #bbb; stroke-width: 0.5; }
+      .mat-porch { fill: #8b7355; stroke: #6b5335; stroke-width: 1; }
+      .mat-door { fill: #3a5a7c; stroke: #2a4a6c; stroke-width: 1; }
+      .mat-foundation { fill: #b0a89c; stroke: #90887c; stroke-width: 0.5; }
+      .mat-gravel { fill: #ddd; stroke: #ccc; stroke-width: 0.5; }
+      .glass { fill: #b8d4e8; stroke: #8ab; stroke-width: 0.5; opacity: 0.6; }
+    </style>
+  </defs>
+
+  <!-- Origin: OX=70, OY=100. Scale: 1' = 40px -->
+  <!-- OX=70, OY=100, Width=960, WallH=320, RoofH=240 -->
+
+  <text x="550" y="30" class="title">THE CASCADE 480 — FRONT ELEVATION</text>
+  <text x="550" y="48" class="subtitle">24' Wide · Gable Roof 6:12 · Board &amp; Batten Siding</text>
+
+  <!-- Ground line -->
+  <line x1="40" y1="420" x2="1060" y2="420" stroke="#333" stroke-width="2" />
+  <line x1="40" y1="422" x2="1060" y2="422" stroke="#aaa" stroke-width="0.5" />
+
+  <!-- Foundation (1' exposed) -->
+  <rect x="70" y="380" width="960" height="40" class="mat-foundation" />
+
+  <!-- Main wall body -->
+  <rect x="70" y="100" width="960" height="280" class="mat-siding" />
+
+  <!-- Board & Batten lines -->
+  <g stroke="#ddd" stroke-width="0.5">
+    <line x1="110" y1="100" x2="110" y2="380" /><line x1="150" y1="100" x2="150" y2="380" />
+    <line x1="190" y1="100" x2="190" y2="380" /><line x1="230" y1="100" x2="230" y2="380" />
+    <line x1="270" y1="100" x2="270" y2="380" /><line x1="310" y1="100" x2="310" y2="380" />
+    <line x1="350" y1="100" x2="350" y2="380" /><line x1="390" y1="100" x2="390" y2="380" />
+    <line x1="430" y1="100" x2="430" y2="380" /><line x1="470" y1="100" x2="470" y2="380" />
+    <line x1="510" y1="100" x2="510" y2="380" /><line x1="550" y1="100" x2="550" y2="380" />
+    <line x1="590" y1="100" x2="590" y2="380" /><line x1="630" y1="100" x2="630" y2="380" />
+    <line x1="670" y1="100" x2="670" y2="380" /><line x1="710" y1="100" x2="710" y2="380" />
+    <line x1="750" y1="100" x2="750" y2="380" /><line x1="790" y1="100" x2="790" y2="380" />
+    <line x1="830" y1="100" x2="830" y2="380" /><line x1="870" y1="100" x2="870" y2="380" />
+    <line x1="910" y1="100" x2="910" y2="380" /><line x1="950" y1="100" x2="950" y2="380" />
+    <line x1="990" y1="100" x2="990" y2="380" />
+  </g>
+
+  <!-- Roof (gable, 6:12 pitch, rise=6'=240px at center) -->
+  <polygon points="70,100 550,-60 1030,100" class="mat-roof" />
+  <!-- Roof overhang / fascia -->
+  <polygon points="55,100 550,-80 1045,100" fill="none" stroke="#333" stroke-width="2" />
+  <line x1="55" y1="100" x2="1045" y2="100" stroke="#333" stroke-width="2" />
+
+  <!-- Windows -->
+  <!-- Left window (living room, centered at x=240, y=180, 3'w x 4'h = 120x160) -->
+  <rect x="180" y="180" width="120" height="160" class="mat-trim" />
+  <rect x="188" y="188" width="104" height="144" class="glass" />
+  <line x1="240" y1="188" x2="240" y2="332" stroke="#8ab" stroke-width="1" />
+  <line x1="188" y1="260" x2="292" y2="260" stroke="#8ab" stroke-width="1" />
+  <rect x="175" y="175" width="130" height="170" fill="none" stroke="#999" stroke-width="1.5" />
+
+  <!-- Right window (bedroom, centered at x=750, y=180, 2.5'w x 4'h = 100x160) -->
+  <rect x="700" y="180" width="100" height="160" class="mat-trim" />
+  <rect x="708" y="188" width="84" height="144" class="glass" />
+  <line x1="750" y1="188" x2="750" y2="332" stroke="#8ab" stroke-width="1" />
+  <line x1="708" y1="260" x2="792" y2="260" stroke="#8ab" stroke-width="1" />
+  <rect x="695" y="175" width="110" height="170" fill="none" stroke="#999" stroke-width="1.5" />
+
+  <!-- Entry door (centered at x=490, y=260, 3'w x 7'h = 120x280) -->
+  <rect x="430" y="240" width="120" height="140" class="mat-trim" />
+  <rect x="436" y="246" width="108" height="128" class="mat-door" />
+  <!-- Door panels -->
+  <rect x="448" y="258" width="40" height="50" rx="2" fill="#2a4a6c" stroke="#1a3a5c" stroke-width="0.5" />
+  <rect x="448" y="318" width="40" height="44" rx="2" fill="#2a4a6c" stroke="#1a3a5c" stroke-width="0.5" />
+  <rect x="500" y="258" width="40" height="50" rx="2" fill="#2a4a6c" stroke="#1a3a5c" stroke-width="0.5" />
+  <rect x="500" y="318" width="40" height="44" rx="2" fill="#2a4a6c" stroke="#1a3a5c" stroke-width="0.5" />
+  <!-- Door knob -->
+  <circle cx="530" cy="315" r="5" fill="#c8a45c" stroke="#a8843c" stroke-width="0.5" />
+
+  <!-- Porch roof (over entry, 6' wide x 4' deep) -->
+  <rect x="390" y="195" width="200" height="45" class="mat-porch" opacity="0.9" />
+  <!-- Porch posts -->
+  <rect x="400" y="240" width="8" height="140" class="mat-porch" />
+  <rect x="572" y="240" width="8" height="140" class="mat-porch" />
+  <!-- Porch floor -->
+  <rect x="380" y="380" width="220" height="10" class="mat-porch" />
+
+  <!-- Porch light -->
+  <circle cx="460" cy="270" r="8" fill="#f5e6c8" stroke="#c8a45c" stroke-width="1" />
+
+  <!-- House numbers -->
+  <text x="490" y="235" class="label" style="font-size:10px;fill:#c8a45c">480</text>
+
+  <!-- Gable vent -->
+  <circle cx="550" cy="30" r="20" fill="none" stroke="#666" stroke-width="1.5" />
+  <g stroke="#666" stroke-width="0.8">
+    <line x1="550" y1="10" x2="550" y2="50" />
+    <line x1="530" y1="30" x2="570" y2="30" />
+  </g>
+
+  <!-- Gravel perimeter -->
+  <rect x="40" y="420" width="1020" height="6" class="mat-gravel" />
+
+  <!-- DIMENSIONS -->
+  <!-- Overall width -->
+  <g>
+    <line x1="70" y1="450" x2="1030" y2="450" stroke="#d44" stroke-width="1" />
+    <line x1="70" y1="445" x2="70" y2="455" stroke="#d44" stroke-width="1" />
+    <line x1="1030" y1="445" x2="1030" y2="455" stroke="#d44" stroke-width="1" />
+    <text x="550" y="465" class="dim">24' 0"</text>
+  </g>
+  <!-- Wall height -->
+  <g>
+    <line x1="1055" y1="100" x2="1055" y2="380" stroke="#d44" stroke-width="1" />
+    <line x1="1050" y1="100" x2="1060" y2="100" stroke="#d44" stroke-width="1" />
+    <line x1="1050" y1="380" x2="1060" y2="380" stroke="#d44" stroke-width="1" />
+    <text x="1070" y="245" class="dim" style="writing-mode:tb">8' 0"</text>
+  </g>
+  <!-- Roof rise -->
+  <g>
+    <line x1="1080" y1="-60" x2="1080" y2="100" stroke="#d44" stroke-width="1" />
+    <line x1="1075" y1="100" x2="1085" y2="100" stroke="#d44" stroke-width="1" />
+    <line x1="1075" y1="-60" x2="1085" y2="-60" stroke="#d44" stroke-width="1" />
+    <text x="1095" y="25" class="dim" style="writing-mode:tb">6' 0" rise</text>
+  </g>
+  <!-- Roof pitch annotation -->
+  <text x="270" y="70" style="font-size:10px;fill:#888">6:12 pitch</text>
+  <line x1="270" y1="72" x2="280" y2="77" stroke="#888" stroke-width="0.5" />
+
+  <!-- Materials legend -->
+  <g transform="translate(55, 500)">
+    <rect x="0" y="0" width="220" height="110" fill="#fafaf8" stroke="#ddd" stroke-width="0.5" rx="4" />
+    <text x="10" y="18" style="font-size:9px;fill:#333;font-weight:600">MATERIALS</text>
+    <rect x="10" y="28" width="16" height="10" class="mat-siding" /><text x="32" y="37" style="font-size:8px;fill:#555">Board &amp; Batten (HardiePanel)</text>
+    <rect x="10" y="44" width="16" height="10" class="mat-roof" /><text x="32" y="53" style="font-size:8px;fill:#555">Asphalt shingle (charcoal)</text>
+    <rect x="10" y="60" width="16" height="10" class="mat-trim" /><text x="32" y="69" style="font-size:8px;fill:#555">Trim: HardieTrim (white)</text>
+    <rect x="10" y="76" width="16" height="10" class="mat-foundation" /><text x="32" y="85" style="font-size:8px;fill:#555">Foundation: Concrete (exposed 1')</text>
+    <rect x="10" y="92" width="16" height="10" class="mat-porch" /><text x="32" y="101" style="font-size:8px;fill:#555">Porch: Cedar decking &amp; posts</text>
+  </g>
+
+  <!-- Cost note -->
+  <g transform="translate(380, 520)">
+    <rect x="0" y="0" width="340" height="45" fill="#f0f8f0" stroke="#8c8" stroke-width="0.5" rx="4" />
+    <text x="15" y="18" style="font-size:9px;fill:#2a6a2e;font-weight:600">COST-ENGINEERED: Standard lumber lengths, 16" o.c. framing</text>
+    <text x="15" y="34" style="font-size:9px;fill:#2a6a2e">No special-order materials. Builders report $85K–$110K all-in.</text>
+  </g>
+</svg>
