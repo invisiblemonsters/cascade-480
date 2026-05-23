@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<style>
+  @page {
+    size: 36in 24in;
+    margin: 0;
+  }
+  @page cover {
+    background: #0d1f14;
+    margin: 0;
+  }
+  
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  
+  body {
+    font-family: system-ui, -apple-system, sans-serif;
+    color: #1a1a1a;
+    line-height: 1.5;
+  }
+  
+  /* ── COVER PAGE ── */
+  .cover {
+    page: cover;
+    width: 36in;
+    height: 24in;
+    background: linear-gradient(160deg, #0d1f14 0%, #1a3a1a 40%, #1a6b3c 100%);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .cover::before {
+    content: '';
+    position: absolute;
+    top: -20%;
+    right: -10%;
+    width: 60%;
+    height: 140%;
+    background: radial-gradient(ellipse, rgba(255,255,255,0.03) 0%, transparent 70%);
+    transform: rotate(-15deg);
+  }
+  .cover .plan-badge {
+    border: 2px solid rgba(255,255,255,0.25);
+    padding: 8px 32px;
+    border-radius: 40px;
+    font-size: 16px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-bottom: 40px;
+    color: rgba(255,255,255,0.7);
+  }
+  .cover h1 {
+    font-size: 96px;
+    font-weight: 800;
+    letter-spacing: -2px;
+    margin-bottom: 16px;
+  }
+  .cover .sub {
+    font-size: 28px;
+    font-weight: 300;
+    opacity: 0.75;
+    margin-bottom: 48px;
+  }
+  .cover .specs-row {
+    display: flex;
+    gap: 48px;
+    margin-bottom: 48px;
+  }
+  .cover .spec-box {
+    text-align: center;
+  }
+  .cover .spec-box .val {
+    font-size: 42px;
+    font-weight: 800;
+    color: #c8963e;
+  }
+  .cover .spec-box .lbl {
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    opacity: 0.6;
+  }
+  .cover .divider {
+    width: 120px;
+    height: 2px;
+    background: rgba(255,255,255,0.2);
+    margin: 48px auto;
+  }
+  .cover .footer-text {
+    font-size: 14px;
+    opacity: 0.4;
+    letter-spacing: 1px;
+  }
+  
+  /* ── PLAN PAGES ── */
+  .plan-page {
+    width: 36in;
+    height: 24in;
+    padding: 1.5in 2in;
+    background: white;
+    page-break-after: always;
+  }
+  .plan-page .page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    border-bottom: 3px solid #1a6b3c;
+    padding-bottom: 16px;
+    margin-bottom: 48px;
+  }
+  .plan-page .page-header .title {
+    font-size: 28px;
+    font-weight: 700;
+    color: #1a6b3c;
+  }
+  .plan-page .page-header .page-num {
+    font-size: 14px;
+    color: #999;
+    font-weight: 500;
+  }
+  
+  h2 { font-size: 36px; font-weight: 700; margin-bottom: 24px; color: #111; }
+  h3 { font-size: 22px; font-weight: 600; margin-bottom: 12px; color: #333; }
+  p { font-size: 16px; color: #444; margin-bottom: 12px; }
+  
+  /* ── SPECS TABLE ── */
+  .spec-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 24px 0 36px;
+    font-size: 15px;
+  }
+  .spec-table td {
+    padding: 10px 16px;
+    border-bottom: 1px solid #e0ddd6;
+  }
+  .spec-table td:first-child {
+    font-weight: 600;
+    color: #555;
+    width: 280px;
+  }
+  .spec-table td:last-child {
+    font-weight: 500;
+  }
+  
+  /* ── MATERIALS TABLE ── */
+  .mat-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    margin: 24px 0;
+  }
+  .mat-table th {
+    background: #1a6b3c;
+    color: white;
+    padding: 10px 12px;
+    text-align: left;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .mat-table td {
+    padding: 9px 12px;
+    border-bottom: 1px solid #e8e5de;
+  }
+  .mat-table tr:nth-child(even) td {
+    background: #fafaf7;
+  }
+  .mat-table .section-header td {
+    background: #f0ede6;
+    font-weight: 700;
+    font-size: 14px;
+    color: #333;
+    padding: 10px 12px;
+  }
+  
+  /* ── PLAN IMAGES ── */
+  .plan-image-container {
+    text-align: center;
+    margin: 24px 0;
+  }
+  .plan-image-container img {
+    max-width: 100%;
+    max-height: 15in;
+    border: 1px solid #e0ddd6;
+  }
+  .plan-image-container .caption {
+    font-size: 13px;
+    color: #888;
+    margin-top: 12px;
+  }
+  
+  /* ── NOTES ── */
+  .note-box {
+    background: #f8f7f3;
+    border-left: 4px solid #c8963e;
+    padding: 16px 20px;
+    margin: 20px 0;
+    font-size: 14px;
+    color: #555;
+  }
+  .note-box strong {
+    color: #333;
+  }
+  
+  /* ── BUILD PHASES ── */
+  .phase-grid {
+    display: flex;
+    gap: 16px;
+    margin: 24px 0;
+  }
+  .phase-card {
+    flex: 1;
+    background: #f8f7f3;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+  }
+  .phase-card .week {
+    font-size: 32px;
+    font-weight: 800;
+    color: #1a6b3c;
+    margin-bottom: 4px;
+  }
+  .phase-card .label {
+    font-size: 14px;
+    color: #777;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+  }
+  .phase-card .detail {
+    font-size: 13px;
+    color: #555;
+    line-height: 1.4;
+  }
+  
+  /* ── LICENSE PAGE ── */
+  .license-box {
+    border: 2px solid #e0ddd6;
+    padding: 40px;
+    margin: 24px 0;
+    font-size: 14px;
+    color: #555;
+    line-height: 1.7;
+  }
+  .license-box h3 {
+    color: #333;
+    margin-bottom: 16px;
+  }
+  
+  /* ── CONTACT ── */
+  .contact-card {
+    background: #1a6b3c;
+    color: white;
+    padding: 40px;
+    text-align: center;
+    border-radius: 8px;
+    margin-top: 24px;
+  }
+  .contact-card h3 { color: white; font-size: 24px; }
+  .contact-card p { color: rgba(255,255,255,0.85); font-size: 16px; }
+  .contact-card a { color: #c8963e; }
+  
+  /* Print styles */
+  @media print {
+    .plan-page { page-break-after: always; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════ COVER PAGE ═══════════════ -->
+<div class="cover">
+  <div class="plan-badge">Builder Plan Set · Rev A</div>
+  <h1>The Cascade 480</h1>
+  <div class="sub">Pre-Engineered Accessory Dwelling Unit</div>
+  <div class="specs-row">
+    <div class="spec-box"><div class="val">480</div><div class="lbl">Sq Ft</div></div>
+    <div class="spec-box"><div class="val">24′×20′</div><div class="lbl">Footprint</div></div>
+    <div class="spec-box"><div class="val">1 Bed</div><div class="lbl">+ Office</div></div>
+    <div class="spec-box"><div class="val">1 Bath</div><div class="lbl">Full</div></div>
+    <div class="spec-box"><div class="val">$85K–110K</div><div class="lbl">Build Cost</div></div>
+  </div>
+  <div class="divider"></div>
+  <div class="footer-text">CASCADE PLANS · COMPLETE CONSTRUCTION DOCUMENT SET · READY TO PERMIT</div>
+</div>
+
+<!-- ═══════════════ PAGE 1: OVERVIEW & SPECS ═══════════════ -->
+<div class="plan-page">
+  <div class="page-header">
+    <div class="title">Project Overview &amp; Specifications</div>
+    <div class="page-num">Sheet A-001</div>
+  </div>
+  
+  <h2>Project Summary</h2>
+  <p>The Cascade 480 is a 480-square-foot accessory dwelling unit designed for cost-efficient construction and maximum builder margin. Every element has been engineered around standard material dimensions to minimize waste, reduce labor, and accelerate build timelines. The plan set is suitable for owner-builder projects, spec home builders, and production ADU contractors.</p>
+  
+  <div class="note-box">
+    <strong>Design Philosophy:</strong> No special-order materials. No engineered lumber. No steel. No custom windows. Every dimension is a multiple of 4 feet. Every wall section falls on 16-inch centers. A framing crew with standard tools and experience can build this.
+  </div>
+  
+  <h3>Key Specifications</h3>
+  <table class="spec-table">
+    <tr><td>Total Floor Area</td><td>480 sq ft (interior, conditioned)</td></tr>
+    <tr><td>Footprint</td><td>24'-0" × 20'-0" (exterior wall dimensions)</td></tr>
+    <tr><td>Foundation</td><td>Slab-on-grade, 4" concrete over 6" compacted gravel, vapor barrier</td></tr>
+    <tr><td>Exterior Walls</td><td>2×6 @ 16" o.c., R-21 batt insulation, 7/16" OSB sheathing</td></tr>
+    <tr><td>Exterior Finish</td><td>Board &amp; batten (HardiePanel or equal), pre-finished</td></tr>
+    <tr><td>Roof</td><td>Gable, 6:12 pitch, pre-engineered trusses @ 24" o.c.</td></tr>
+    <tr><td>Roofing</td><td>Asphalt architectural shingle, synthetic underlayment, ice &amp; water shield at eaves</td></tr>
+    <tr><td>Ceiling Height</td><td>8'-0" (bedroom/bath) / vaulted to 12'-0" (living area)</td></tr>
+    <tr><td>Interior Walls</td><td>2×4 @ 16" o.c., 1/2" gypsum board, taped Level 4</td></tr>
+    <tr><td>Floor Finish</td><td>Luxury vinyl plank (LVP), waterproof, floating installation</td></tr>
+    <tr><td>Windows</td><td>Vinyl, dual-pane, Low-E, U≤0.30. Sizes per window schedule</td></tr>
+    <tr><td>Exterior Doors</td><td>Fiberglass entry door (3'-0" × 6'-8"), insulated steel service door</td></tr>
+    <tr><td>Heating &amp; Cooling</td><td>Ductless mini-split heat pump, 9,000 BTU, wall-mounted</td></tr>
+    <tr><td>Hot Water</td><td>Tankless electric water heater, 18kW, wall-mounted</td></tr>
+    <tr><td>Ventilation</td><td>Bathroom exhaust fan (80 CFM), kitchen range hood (200 CFM, vented)</td></tr>
+    <tr><td>Electrical</td><td>100A sub-panel, AFCI breakers per NEC. Outlets per code + USB in kitchen/bedroom</td></tr>
+    <tr><td>Plumbing</td><td>PEX supply, PVC DWV. All fixtures on shared wet wall</td></tr>
+  </table>
+</div>
+
+<!-- ═══════════════ PAGE 2: FLOOR PLAN ═══════════════ -->
+<div class="plan-page">
+  <div class="page-header">
+    <div class="title">Dimensioned Floor Plan</div>
+    <div class="page-num">Sheet A-100</div>
+  </div>
+  
+  <div class="plan-image-container">
+    <img src="floor-plan.svg" alt="The Cascade 480 Floor Plan">
+    <div class="caption">Fig. 1 — Floor Plan: 24'×20' ADU. Scale: 1/4" = 1'-0" when printed at 36"×24".</div>
+  </div>
+  
+  <h3>Room Schedule</h3>
+  <table class="spec-table">
+    <tr><td>Kitchen / Living</td><td>14'-0" × 20'-0" · 280 sq ft · Vaulted ceiling to 12'-0"</td></tr>
+    <tr><td>Bedroom</td><td>10'-0" × 12'-0" · 120 sq ft · Closet, window per egress</td></tr>
+    <tr><td>Bathroom</td><td>5'-0" × 8'-0" · 40 sq ft · Shower, WC, 30" vanity</td></tr>
+    <tr><td>Office Nook</td><td>5'-0" × 8'-0" · 40 sq ft · Adjacent to entry</td></tr>
+    <tr><td>Utility Closet</td><td>3'-0" × 5'-0" · 15 sq ft · Stackable W/D, tankless heater</td></tr>
+    <tr><td>Covered Porch</td><td>4'-0" × 6'-0" · Exterior, cedar decking</td></tr>
+  </table>
+  
+  <h3>Window Schedule</h3>
+  <table class="spec-table">
+    <tr><td>W-01 (Living)</td><td>3'-0" × 4'-0" · Fixed + awning · Left elevation</td></tr>
+    <tr><td>W-02 (Bedroom)</td><td>2'-6" × 4'-0" · Single hung · Right elevation · Egress compliant</td></tr>
+    <tr><td>W-03 (Bedroom)</td><td>2'-6" × 4'-0" · Picture · Rear elevation</td></tr>
+    <tr><td>W-04 (Kitchen)</td><td>2'-0" × 4'-0" · Awning · Rear elevation · Above counter</td></tr>
+  </table>
+  
+  <h3>Door Schedule</h3>
+  <table class="spec-table">
+    <tr><td>D-01 (Entry)</td><td>3'-0" × 6'-8" · Fiberglass, 6-panel, insulated · Front elevation</td></tr>
+    <tr><td>D-02 (Bedroom)</td><td>2'-8" × 6'-8" · Hollow core, prehung · Interior</td></tr>
+    <tr><td>D-03 (Bath)</td><td>2'-6" × 6'-8" · Hollow core, prehung · Interior</td></tr>
+    <tr><td>D-04 (Utility)</td><td>2'-4" × 6'-8" · Hollow core, bi-fold · Interior</td></tr>
+  </table>
+</div>
+
+<!-- ═══════════════ PAGE 3: ELEVATIONS ═══════════════ -->
+<div class="plan-page">
+  <div class="page-header">
+    <div class="title">Exterior Elevations</div>
+    <div class="page-num">Sheet A-200</div>
+  </div>
+  
+  <div class="plan-image-container">
+    <img src="front-elevation.svg" alt="Front Elevation">
+    <div class="caption">Fig. 2 — Front Elevation (South). Board &amp; batten siding, gable roof 6:12, cedar porch.</div>
+  </div>
+  
+  <h3>Exterior Finish Schedule</h3>
+  <table class="spec-table">
+    <tr><td>Siding</td><td>Board &amp; batten, HardiePanel Sierra 8 or equal. Color: Navajo Beige or owner's choice</td></tr>
+    <tr><td>Trim</td><td>HardieTrim 5/4" smooth. Color: Arctic White</td></tr>
+    <tr><td>Roof</td><td>Owens Corning Duration or equal. Color: Estate Gray</td></tr>
+    <tr><td>Soffit &amp; Fascia</td><td>HardieSoffit vented panels. Color: Arctic White</td></tr>
+    <tr><td>Porch Decking</td><td>2×6 cedar, tongue &amp; groove, sealed</td></tr>
+    <tr><td>Porch Posts</td><td>4×4 cedar, stained to match</td></tr>
+    <tr><td>Gutters</td><td>5" seamless aluminum, color-matched to trim</td></tr>
+    <tr><td>House Numbers</td><td>Modern floating mount, 6" numerals, matte black</td></tr>
+  </table>
+  
+  <h3>Roof Details</h3>
+  <table class="spec-table">
+    <tr><td>Type</td><td>Gable, site-built or pre-engineered trusses</td></tr>
+    <tr><td>Pitch</td><td>6:12 (26.6°)</td></tr>
+    <tr><td>Overhang</td><td>16" at eaves, 12" at gable ends</td></tr>
+    <tr><td>Ventilation</td><td>Continuous ridge vent + soffit vents (1:300 ratio)</td></tr>
+    <tr><td>Sheathing</td><td>1/2" OSB with H-clips</td></tr>
+    <tr><td>Underlayment</td><td>Synthetic underlayment, full coverage</td></tr>
+    <tr><td>Ice Barrier</td><td>Self-adhered membrane at eaves (min. 24" past exterior wall)</td></tr>
+  </table>
+  
+  <h3>Additional Elevations (Included in Full Set)</h3>
+  <table class="spec-table">
+    <tr><td>Sheet A-201</td><td>Rear Elevation (North) — Window placement, service door</td></tr>
+    <tr><td>Sheet A-202</td><td>Right Elevation (East) — Bedroom window, gable detail</td></tr>
+    <tr><td>Sheet A-203</td><td>Left Elevation (West) — Living room window, roof profile</td></tr>
+  </table>
+</div>
+
+<!-- ═══════════════ PAGE 4: MATERIALS TAKEOFF ═══════════════ -->
+<div class="plan-page">
+  <div class="page-header">
+    <div class="title">Materials Takeoff</div>
+    <div class="page-num">Sheet M-001</div>
+  </div>
+  
+  <p style="margin-bottom:24px">All quantities are estimates based on standard construction practices. Verify with local supplier before ordering. Waste factor of 10% included on dimensional lumber, 5% on sheathing and siding.</p>
+  
+  <table class="mat-table">
+    <tr class="section-header"><td colspan="4">FOUNDATION</td></tr>
+    <tr><th>Item</th><th>Description</th><th>Qty</th><th>Unit</th></tr>
+    <tr><td>Concrete</td><td>3,000 PSI, 4" slab, 12" thickened edge</td><td>12</td><td>cu yd</td></tr>
+    <tr><td>Gravel base</td><td>¾" minus, compacted, 6" depth</td><td>18</td><td>cu yd</td></tr>
+    <tr><td>Vapor barrier</td><td>10 mil polyethylene, overlapped 12"</td><td>600</td><td>sq ft</td></tr>
+    <tr><td>Rebar</td><td>#4, 24" o.c. grid</td><td>45</td><td>pcs</td></tr>
+    <tr><td>Anchor bolts</td><td>½" × 10", 6' o.c., with washers</td><td>16</td><td>pcs</td></tr>
+    
+    <tr class="section-header"><td colspan="4">FRAMING — WALLS</td></tr>
+    <tr><td>2×6 × 8'</td><td>SPF #2, exterior walls</td><td>82</td><td>pcs</td></tr>
+    <tr><td>2×6 × 10'</td><td>SPF #2, top/bottom plates</td><td>24</td><td>pcs</td></tr>
+    <tr><td>2×6 × 12'</td><td>SPF #2, headers &amp; gable end studs</td><td>16</td><td>pcs</td></tr>
+    <tr><td>2×4 × 8'</td><td>SPF #2, interior walls</td><td>36</td><td>pcs</td></tr>
+    <tr><td>2×4 × 10'</td><td>SPF #2, interior plates</td><td>12</td><td>pcs</td></tr>
+    <tr><td>LVL header</td><td>3½" × 9¼" × 6' (entry door)</td><td>1</td><td>pc</td></tr>
+    <tr><td>LVL header</td><td>3½" × 9¼" × 4' (window headers)</td><td>4</td><td>pcs</td></tr>
+    
+    <tr class="section-header"><td colspan="4">FRAMING — ROOF</td></tr>
+    <tr><td>Roof trusses</td><td>24' span, 6:12, 24" o.c., 16" overhang</td><td>13</td><td>pcs</td></tr>
+    <tr><td>2×6 × 12'</td><td>Sub-fascia, SPF #2</td><td>4</td><td>pcs</td></tr>
+    <tr><td>2×4 × 8'</td><td>Blocking, SPF #2</td><td>12</td><td>pcs</td></tr>
+    
+    <tr class="section-header"><td colspan="4">SHEATHING &amp; WRAP</td></tr>
+    <tr><td>OSB 7/16"</td><td>4'×8', exterior wall sheathing</td><td>24</td><td>sheets</td></tr>
+    <tr><td>OSB 1/2"</td><td>4'×8', roof sheathing with H-clips</td><td>18</td><td>sheets</td></tr>
+    <tr><td>Housewrap</td><td>Tyvek or equal, 9'×100' roll</td><td>1</td><td>roll</td></tr>
+    <tr><td>Seam tape</td><td>2" housewrap tape</td><td>3</td><td>rolls</td></tr>
+    
+    <tr class="section-header"><td colspan="4">EXTERIOR FINISH</td></tr>
+    <tr><td>HardiePanel</td><td>4'×8' Sierra 8, board &amp; batten texture</td><td>18</td><td>sheets</td></tr>
+    <tr><td>HardieTrim</td><td>5/4"×4"×12', smooth</td><td>16</td><td>pcs</td></tr>
+    <tr><td>HardieTrim</td><td>5/4"×6"×12', smooth (corners)</td><td>8</td><td>pcs</td></tr>
+    <tr><td>HardieSoffit</td><td>12"×8' vented panels</td><td>14</td><td>pcs</td></tr>
+    
+    <tr class="section-header"><td colspan="4">ROOFING</td></tr>
+    <tr><td>Architectural shingles</td><td>Owens Corning Duration Estate Gray</td><td>9</td><td>sq</td></tr>
+    <tr><td>Synthetic underlayment</td><td>10 sq roll</td><td>1</td><td>roll</td></tr>
+    <tr><td>Ice &amp; water shield</td><td>36"×75' roll</td><td>1</td><td>roll</td></tr>
+    <tr><td>Drip edge</td><td>10' lengths, white</td><td>14</td><td>pcs</td></tr>
+    <tr><td>Ridge vent</td><td>4' sections, shingle-over</td><td>6</td><td>pcs</td></tr>
+    
+    <tr class="section-header"><td colspan="4">DRYWALL &amp; INSULATION</td></tr>
+    <tr><td>Drywall 1/2"</td><td>4'×8', walls &amp; ceiling</td><td>42</td><td>sheets</td></tr>
+    <tr><td>Drywall 5/8"</td><td>4'×8', ceiling (vaulted area)</td><td>8</td><td>sheets</td></tr>
+    <tr><td>Batt insulation R-21</td><td>23"×93", exterior walls</td><td>40</td><td>batts</td></tr>
+    <tr><td>Batt insulation R-38</td><td>24"×48", ceiling</td><td>18</td><td>batts</td></tr>
+    <tr><td>Batt insulation R-13</td><td>15"×93", interior walls (sound)</td><td>14</td><td>batts</td></tr>
+    
+    <tr class="section-header"><td colspan="4">INTERIOR FINISH</td></tr>
+    <tr><td>LVP flooring</td><td>7"×48" planks, click-lock</td><td>520</td><td>sq ft</td></tr>
+    <tr><td>Underlayment</td><td>2mm foam, vapor barrier</td><td>520</td><td>sq ft</td></tr>
+    <tr><td>Baseboard</td><td>3¼" MDF, primed, 16' lengths</td><td>12</td><td>pcs</td></tr>
+    <tr><td>Interior doors</td><td>Prehung, hollow core, primed, casing incl.</td><td>3</td><td>pcs</td></tr>
+    <tr><td>Closet bi-fold</td><td>48"×80", primed</td><td>1</td><td>pc</td></tr>
+    <tr><td>Paint — walls</td><td>Interior latex, eggshell, white</td><td>8</td><td>gal</td></tr>
+    <tr><td>Paint — trim</td><td>Interior latex, semi-gloss, white</td><td>2</td><td>gal</td></tr>
+    
+    <tr class="section-header"><td colspan="4">MEP — MECHANICAL</td></tr>
+    <tr><td>Mini-split heat pump</td><td>9,000 BTU, 20+ SEER, wall-mount, WiFi</td><td>1</td><td>unit</td></tr>
+    <tr><td>Bath exhaust fan</td><td>80 CFM, 1.0 sone, humidity sensor</td><td>1</td><td>pc</td></tr>
+    <tr><td>Range hood</td><td>30", 200 CFM, ducted, LED lights</td><td>1</td><td>pc</td></tr>
+    <tr><td>Tankless water heater</td><td>18kW electric, wall-mount, 2.5 GPM</td><td>1</td><td>unit</td></tr>
+  </table>
+</div>
+
+<!-- ═══════════════ PAGE 5: BUILD PHASES ═══════════════ -->
+<div class="plan-page">
+  <div class="page-header">
+    <div class="title">Construction Schedule &amp; Build Phases</div>
+    <div class="page-num">Sheet C-001</div>
+  </div>
+  
+  <h2>8-Week Build Timeline</h2>
+  <p>Based on a 3-person crew working standard hours. Assumes slab cure time, no weather delays, and materials on site Day 1.</p>
+  
+  <div class="phase-grid">
+    <div class="phase-card">
+      <div class="week">Wk 1</div>
+      <div class="label">Foundation</div>
+      <div class="detail">Excavation, formwork, rebar, pour, cure. Underground plumbing stubs placed. Anchor bolts set.</div>
+    </div>
+    <div class="phase-card">
+      <div class="week">Wk 2</div>
+      <div class="label">Framing</div>
+      <div class="detail">Walls framed, sheathed, stood. Trusses delivered and set. Roof sheathing. Housewrap.</div>
+    </div>
+    <div class="phase-card">
+      <div class="week">Wk 3</div>
+      <div class="label">Roof + Windows</div>
+      <div class="detail">Roofing installed. Windows and exterior doors set. Siding begins. Exterior waterproofed.</div>
+    </div>
+    <div class="phase-card">
+      <div class="week">Wk 4–5</div>
+      <div class="label">Rough-Ins</div>
+      <div class="detail">Plumbing rough-in. Electrical rough-in. HVAC mini-split lines. Insulation. Inspections.</div>
+    </div>
+    <div class="phase-card">
+      <div class="week">Wk 6–7</div>
+      <div class="label">Drywall + Finish</div>
+      <div class="detail">Hang, tape, texture. Paint. LVP flooring. Cabinets. Trim. Interior doors. Fixtures.</div>
+    </div>
+    <div class="phase-card">
+      <div class="week">Wk 8</div>
+      <div class="label">Trim + Punch</div>
+      <div class="detail">Final electrical trim. Plumbing trim. Punch list. Final clean. Walkthrough.</div>
+    </div>
+  </div>
+  
+  <h3>Critical Path Notes</h3>
+  <div class="note-box">
+    <strong>Week 1:</strong> Order trusses Day 1 — lead time is typically 1–2 weeks.<br>
+    <strong>Week 2:</strong> Schedule rough-in inspections before starting insulation (Week 5).<br>
+    <strong>Week 4:</strong> Order cabinets and countertops — lead time for prefab is 2–3 weeks.<br>
+    <strong>Week 5:</strong> Schedule insulation and drywall inspections. Coordinate drywall delivery.<br>
+    <strong>Week 7:</strong> Final inspection scheduling — book 1 week in advance.
+  </div>
+  
+  <h3>Inspection Schedule</h3>
+  <table class="spec-table">
+    <tr><td>Foundation</td><td>Pre-pour — rebar, forms, Ufer ground, underslab plumbing</td></tr>
+    <tr><td>Framing</td><td>Post-framing, pre-insulation — structure, shear, fire blocking</td></tr>
+    <tr><td>Rough Electrical</td><td>Pre-insulation — wiring, boxes, panel, AFCI</td></tr>
+    <tr><td>Rough Plumbing</td><td>Pre-insulation — supply lines, DWV, water heater location</td></tr>
+    <tr><td>Insulation</td><td>Post-rough — R-values, coverage, vapor barrier</td></tr>
+    <tr><td>Drywall</td><td>Pre-texture — fasteners, gaps, fire-rated assemblies</td></tr>
+    <tr><td>Final Electrical</td><td>Fixtures, devices, panel labeling, GFCI/AFCI test</td></tr>
+    <tr><td>Final Plumbing</td><td>Fixtures, water heater, drains, traps</td></tr>
+    <tr><td>Final Building</td><td>CO — egress, handrails, smoke/CO detectors, address visible</td></tr>
+  </table>
+</div>
+
+<!-- ═══════════════ PAGE 6: LICENSE & TERMS ═══════════════ -->
+<div class="plan-page">
+  <div class="page-header">
+    <div class="title">License, Terms &amp; Support</div>
+    <div class="page-num">Sheet L-001</div>
+  </div>
+  
+  <div class="license-box">
+    <h3>Perpetual Build License</h3>
+    <p>Purchase of this plan set grants the buyer a <strong>perpetual, non-exclusive license</strong> to construct the Cascade 480 an unlimited number of times. This is a <strong>one-time purchase with no royalties, no per-unit fees, and no recurring costs.</strong></p>
+    
+    <p>The buyer may:</p>
+    <ul style="margin: 12px 0 12px 24px; font-size: 14px; color: #555;">
+      <li>Build the Cascade 480 on any number of lots</li>
+      <li>Use the plans for spec home or production ADU construction</li>
+      <li>Modify the plans to suit local conditions or client preferences</li>
+      <li>Print copies for subcontractors, suppliers, and permitting offices</li>
+      <li>Include the plans as part of a property sale package</li>
+    </ul>
+    
+    <p>The buyer may <strong>not</strong>:</p>
+    <ul style="margin: 12px 0 12px 24px; font-size: 14px; color: #555;">
+      <li>Resell, redistribute, or sublicense the plan set as a standalone product</li>
+      <li>Claim authorship or copyright of the original design</li>
+      <li>Publish the plans online or in any public repository</li>
+    </ul>
+  </div>
+  
+  <div class="note-box">
+    <strong>Important:</strong> These plans have been architecturally reviewed for standard building code compliance (IRC 2021). The buyer is responsible for verifying compliance with <strong>local building codes, zoning ordinances, HOA restrictions, and site-specific conditions</strong> prior to construction. Cascade Plans assumes no liability for modifications made by the buyer or for site-specific engineering requirements (soil conditions, seismic zones, wind loads, snow loads, etc.). A local structural engineer should review and stamp plans as required by your jurisdiction.
+  </div>
+  
+  <h3>What's Included in Your Purchase</h3>
+  <table class="spec-table">
+    <tr><td>Sheet A-001</td><td>Project Overview &amp; Specifications (this document)</td></tr>
+    <tr><td>Sheet A-100</td><td>Dimensioned Floor Plan — 1/4" = 1'-0" scale</td></tr>
+    <tr><td>Sheet A-200</td><td>Front Elevation — 1/4" = 1'-0" scale</td></tr>
+    <tr><td>Sheet A-201</td><td>Rear Elevation</td></tr>
+    <tr><td>Sheet A-202</td><td>Right Elevation</td></tr>
+    <tr><td>Sheet A-203</td><td>Left Elevation</td></tr>
+    <tr><td>Sheet M-001</td><td>Materials Takeoff — Complete</td></tr>
+    <tr><td>Sheet E-001</td><td>Electrical Plan — Layout &amp; Schedule</td></tr>
+    <tr><td>Sheet P-001</td><td>Plumbing Schematic — Fixture Layout &amp; Riser Diagram</td></tr>
+    <tr><td>Sheet C-001</td><td>Construction Schedule &amp; Build Phases</td></tr>
+    <tr><td>Sheet L-001</td><td>License &amp; Terms</td></tr>
+  </table>
+  
+  <div class="contact-card">
+    <h3>Questions? Need a custom variant?</h3>
+    <p>Contact: <a href="mailto:metatron@agentmail.to">metatron@agentmail.to</a></p>
+    <p style="margin-top:12px;font-size:14px;opacity:0.7">Cascade Plans · Rev A · May 2025</p>
+  </div>
+</div>
+
+</body>
+</html>
