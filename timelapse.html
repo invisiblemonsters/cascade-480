@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cascade 480 — Build Timelapse</title>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{background:#0D1F14;color:#EAEAEA;font-family:'Menlo','Consolas',monospace;overflow:hidden}
+#stage{width:100vw;height:100vh;position:relative}
+
+/* Phase containers */
+.phase{position:absolute;top:0;left:0;width:100%;height:100%;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  opacity:0;transition:opacity 0.8s ease}
+.phase.active{opacity:1}
+
+/* Canvas for construction drawing */
+canvas{display:block;border-radius:8px}
+
+/* Labels and callouts */
+.label{position:absolute;color:#58C4DD;font-size:14px;pointer-events:none;
+  opacity:0;transition:opacity 0.5s}
+.label.visible{opacity:1}
+.highlight{color:#FF6B4A;font-weight:bold}
+
+/* Phase indicator */
+#progress{position:absolute;bottom:30px;left:50%;transform:translateX(-50%);
+  display:flex;gap:8px;z-index:10}
+.dot{width:10px;height:10px;border-radius:50%;background:#334433;
+  transition:background 0.3s}
+.dot.active{background:#C8963E}
+.dot.done{background:#58C4DD}
+
+/* Title */
+#title{position:absolute;top:40px;left:50%;transform:translateX(-50%);
+  font-size:28px;font-weight:800;color:#C8963E;opacity:0;
+  transition:opacity 0.6s;text-align:center;z-index:5}
+#subtitle{font-size:14px;color:#667766;margin-top:8px;font-weight:400}
+
+/* CTA */
+#cta{position:absolute;bottom:100px;left:50%;transform:translateX(-50%);
+  text-align:center;opacity:0;transition:opacity 0.6s;z-index:5}
+#cta .price{font-size:64px;font-weight:800;color:#C8963E}
+#cta .sub{font-size:14px;color:#667766;margin:8px 0}
+#cta .url{font-size:16px;color:#58C4DD}
+
+/* Narrator text */
+#narrator{position:absolute;top:120px;left:50%;transform:translateX(-50%);
+  font-size:18px;color:#EAEAEA;text-align:center;max-width:600px;
+  opacity:0;transition:opacity 0.6s;z-index:5}
+</style>
+</head>
+<body>
+<div id="stage">
+  <div id="title"><div>THE CASCADE 480</div><div id="subtitle">480 sq ft ADU · Build Timelapse</div></div>
+  <div id="narrator"></div>
+  <canvas id="canvas"></canvas>
+  <div id="cta">
+    <div class="price">$997</div>
+    <div class="sub">ONE-TIME · NO ROYALTIES · OWN IT OUTRIGHT</div>
+    <div class="url">invisiblemonsters.github.io/cascade-480</div>
+  </div>
+  <div id="progress">
+    <div class="dot" data-phase="0"></div>
+    <div class="dot" data-phase="1"></div>
+    <div class="dot" data-phase="2"></div>
+    <div class="dot" data-phase="3"></div>
+    <div class="dot" data-phase="4"></div>
+    <div class="dot" data-phase="5"></div>
+  </div>
+</div>
+
+<script>
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+const W = Math.min(window.innerWidth - 60, 900);
+const H = Math.min(window.innerHeight - 200, 600);
+canvas.width = W;
+canvas.height = H;
+canvas.style.position = 'absolute';
+canvas.style.top = `${(window.innerHeight - H) / 2}px`;
+canvas.style.left = `${(window.innerWidth - W) / 2}px`;
+
+const BG = '#0D1F14';
+const STRUCTURE = '#C8963E';
+const DIMENSION = '#58C4DD';
+const ACCENT = '#FF6B4A';
+const SURFACE = '#2A5A3A';
+const ROOF = '#3A2A1A';
+const MONEY = '#4ADE80';
+const WHITE = '#EAEAEA';
+const DIM = '#556655';
+
+const FT = H / 22;
+const OX = W/2 - 12*FT;
+const OY = H/2 - 2*FT;
+
+const phases = [
+  {
+    name: 'Site Prep',
+    narrator: "24′×20′ slab. That's the whole footprint. Standard forms — nothing custom ordered.",
+    draw(progress) {
+      // Ground outline
+      const alpha = Math.min(progress * 2, 1);
+      ctx.strokeStyle = `rgba(200, 150, 62, ${alpha * 0.4})`;
+      ctx.lineWidth = 2;
+      ctx.setLineDash([8, 4]);
+      ctx.strokeRect(OX, OY, 24*FT, 20*FT);
+      ctx.setLineDash([]);
+      
+      // Slab appearing
+      const slabAlpha = Math.max(0, Math.min((progress - 0.2) * 3, 0.7));
+      ctx.fillStyle = `rgba(42, 90, 58, ${slabAlpha})`;
+      ctx.fillRect(OX, OY, 24*FT, 20*FT);
+      ctx.strokeStyle = `rgba(234, 234, 234, ${slabAlpha})`;
+      ctx.lineWidth = 3;
+      ctx.strokeRect(OX, OY, 24*FT, 20*FT);
+      
+      // Dimensions
+      if (progress > 0.5) {
+        const dAlpha = (progress - 0.5) * 2;
+        ctx.fillStyle = `rgba(255, 107, 74, ${dAlpha})`;
+        ctx.font = `${14*dAlpha}px Menlo`;
+        ctx.textAlign = 'center';
+        ctx.fillText("24′ 0″", OX + 12*FT, OY + 20*FT + 25);
+        ctx.save();
+        ctx.translate(OX + 24*FT + 25, OY + 10*FT);
+        ctx.rotate(Math.PI/2);
+        ctx.fillText("20′ 0″", 0, 0);
+        ctx.restore();
+      }
+      
+      // Slab label
+      if (progress > 0.6) {
+        const lAlpha = (progress - 0.6) * 2.5;
+        ctx.fillStyle = `rgba(102, 119, 102, ${lAlpha})`;
+        ctx.font = '12px Menlo';
+        ctx.textAlign = 'center';
+        ctx.fillText('SLAB-ON-GRADE', OX + 12*FT, OY + 20*FT + 45);
+      }
+    }
+  },
+  {
+    name: 'Framing',
+    narrator: "Walls go up. 2×6 studs at 16″ on center. Every stud, every plate — standard lumber yard stock.",
+    draw(progress) {
+      // Slab stays
+      ctx.fillStyle = `rgba(42, 90, 58, 0.4)`;
+      ctx.fillRect(OX, OY, 24*FT, 20*FT);
+      ctx.strokeStyle = `rgba(234, 234, 234, 0.5)`;
+      ctx.lineWidth = 3;
+      ctx.strokeRect(OX, OY, 24*FT, 20*FT);
+      
+      // Bottom plate
+      ctx.fillStyle = `rgba(200, 150, 62, 0.8)`;
+      ctx.fillRect(OX, OY + 20*FT - 4, 24*FT, 8);
+      
+      // Studs appearing one by one
+      const numStuds = 18;
+      const studW = 6;
+      const studH = 20*FT - 8;
+      for (let i = 0; i < numStuds; i++) {
+        const studProgress = Math.max(0, Math.min((progress * numStuds) - i, 1));
+        if (studProgress > 0) {
+          const x = OX + (i * 1.33 * FT) + FT*0.5;
+          const h = studH * studProgress;
+          const y = OY + studH - h;
+          ctx.fillStyle = `rgba(200, 150, 62, ${0.4 + studProgress * 0.4})`;
+          ctx.fillRect(x - studW/2, y, studW, h);
+        }
+      }
+      
+      // Top plate
+      if (progress > 0.7) {
+        ctx.fillStyle = `rgba(200, 150, 62, ${(progress - 0.7) * 3})`;
+        ctx.fillRect(OX, OY, 24*FT, 8);
+      }
+      
+      // 16" OC callout
+      if (progress > 0.5) {
+        const a = Math.min((progress - 0.5) * 2, 1);
+        const x1 = OX + FT*0.5;
+        const x2 = OX + FT*1.83;
+        const y = OY + 20*FT + 50;
+        ctx.strokeStyle = `rgba(255, 107, 74, ${a})`;
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.moveTo(x1, OY + 20*FT); ctx.lineTo(x1, y);
+        ctx.moveTo(x2, OY + 20*FT); ctx.lineTo(x2, y);
+        ctx.moveTo(x1, y); ctx.lineTo(x2, y);
+        ctx.stroke();
+        ctx.fillStyle = `rgba(255, 107, 74, ${a})`;
+        ctx.font = '13px Menlo';
+        ctx.textAlign = 'center';
+        ctx.fillText('16″ o.c.', (x1+x2)/2, y + 18);
+      }
+    }
+  },
+  {
+    name: 'Roof',
+    narrator: "6:12 gable. Standard trusses. No steel. No engineered lumber. Your usual roofers can handle this.",
+    draw(progress) {
+      // Slab + walls (ghosted)
+      ctx.fillStyle = `rgba(42, 90, 58, 0.25)`;
+      ctx.fillRect(OX, OY, 24*FT, 20*FT);
+      ctx.fillStyle = `rgba(200, 150, 62, 0.3)`;
+      ctx.fillRect(OX, OY, 24*FT, 8);
+      ctx.fillRect(OX, OY + 20*FT - 8, 24*FT, 8);
+      for (let i = 0; i < 18; i++) {
+        ctx.fillRect(OX + (i * 1.33 * FT) + FT*0.5 - 3, OY + 8, 6, 20*FT - 16);
+      }
+      
+      // Ridge
+      const ridgeY = OY - 6*FT; // 6:12 pitch = 6' rise
+      const ridgeAlpha = Math.min(progress * 2, 1);
+      ctx.strokeStyle = `rgba(58, 42, 26, ${ridgeAlpha})`;
+      ctx.lineWidth = 4;
+      ctx.beginPath();
+      ctx.moveTo(OX - 10, ridgeY);
+      ctx.lineTo(OX + 24*FT + 10, ridgeY);
+      ctx.stroke();
+      
+      // Rafters
+      const midX = OX + 12*FT;
+      const numRafters = 10;
+      for (let i = 0; i < numRafters; i++) {
+        const rp = Math.max(0, Math.min((progress * numRafters * 1.3) - i, 1));
+        if (rp > 0) {
+          const x = OX + (i * 2.4 * FT);
+          ctx.strokeStyle = `rgba(58, 42, 26, ${rp * 0.8})`;
+          ctx.lineWidth = 2;
+          // Left rafter
+          ctx.beginPath();
+          ctx.moveTo(x, OY);
+          ctx.lineTo(midX, ridgeY);
+          ctx.stroke();
+          // Right rafter
+          ctx.beginPath();
+          ctx.moveTo(OX + 24*FT - (i * 2.4 * FT), OY);
+          ctx.lineTo(midX, ridgeY);
+          ctx.stroke();
+        }
+      }
+      
+      // Pitch callout
+      if (progress > 0.5) {
+        const a = Math.min((progress - 0.5) * 2, 1);
+        ctx.fillStyle = `rgba(88, 196, 221, ${a})`;
+        ctx.font = '13px Menlo';
+        ctx.textAlign = 'center';
+        ctx.fillText('6:12 PITCH', midX, ridgeY - 15);
+      }
+    }
+  },
+  {
+    name: 'Floor Plan',
+    narrator: "Kitchen/living with vaulted ceiling. Bedroom. Bath and office sharing a wet wall. All plumbing on one wall — that's the money move.",
+    draw(progress) {
+      const a = Math.min(progress * 1.5, 1);
+      
+      // Slab
+      ctx.fillStyle = `rgba(42, 90, 58, 0.15)`;
+      ctx.fillRect(OX, OY, 24*FT, 20*FT);
+      
+      // Floor plan outlines
+      ctx.strokeStyle = `rgba(234, 234, 234, ${a * 0.5})`;
+      ctx.lineWidth = 1.5;
+      ctx.strokeRect(OX + FT, OY + FT, 22*FT, 18*FT);
+      
+      // Interior wall divider
+      const dx = OX + 14*FT;
+      ctx.strokeStyle = `rgba(234, 234, 234, ${a * 0.3})`;
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(dx, OY + FT);
+      ctx.lineTo(dx, OY + 19*FT);
+      ctx.stroke();
+      
+      // Horizontal divider
+      ctx.beginPath();
+      ctx.moveTo(dx, OY + 12*FT);
+      ctx.lineTo(OX + 19*FT, OY + 12*FT);
+      ctx.stroke();
+      
+      // Vertical bath wall
+      ctx.beginPath();
+      ctx.moveTo(OX + 19*FT, OY + 12*FT);
+      ctx.lineTo(OX + 19*FT, OY + 19*FT);
+      ctx.stroke();
+      
+      // Room labels
+      if (progress > 0.3) {
+        ctx.fillStyle = `rgba(234, 234, 234, ${a})`;
+        ctx.font = 'bold 14px Menlo';
+        ctx.textAlign = 'center';
+        ctx.fillText('KITCHEN / LIVING', OX + 7*FT, OY + 10*FT);
+        ctx.font = '11px Menlo';
+        ctx.fillText('14′×20′ · 280 sq ft', OX + 7*FT, OY + 10*FT + 16);
+        ctx.fillText('vaulted ceiling', OX + 7*FT, OY + 10*FT + 30);
+        
+        ctx.font = 'bold 14px Menlo';
+        ctx.fillText('BEDROOM', dx + 5*FT, OY + 5*FT);
+        ctx.font = '11px Menlo';
+        ctx.fillText('10′×12′ · 120 sq ft', dx + 5*FT, OY + 5*FT + 16);
+        
+        ctx.font = 'bold 12px Menlo';
+        ctx.fillText('BATH', dx + 2.5*FT, OY + 15.5*FT);
+        ctx.fillText('OFFICE', dx + 7.5*FT, OY + 15.5*FT);
+      }
+      
+      // Wet wall highlight
+      if (progress > 0.6) {
+        const wa = Math.min((progress - 0.6) * 2.5, 1);
+        const wx = OX + 3*FT;
+        ctx.strokeStyle = `rgba(255, 107, 74, ${wa})`;
+        ctx.lineWidth = 3;
+        ctx.setLineDash([4, 2]);
+        ctx.beginPath();
+        ctx.moveTo(wx, OY + FT);
+        ctx.lineTo(wx, OY + 19*FT);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        
+        ctx.fillStyle = `rgba(255, 107, 74, ${wa})`;
+        ctx.font = '11px Menlo';
+        ctx.textAlign = 'right';
+        ctx.fillText('ALL PLUMBING', wx - 12, OY + 8*FT);
+        ctx.fillText('ON ONE WALL', wx - 12, OY + 8*FT + 14);
+      }
+    }
+  },
+  {
+    name: 'Economics',
+    narrator: "Build for $85K–110K. Rent for $1,400–1,800/mo. Year one ROI: 15–20%. This is why builders pick Cascade.",
+    draw(progress) {
+      // Dim background
+      ctx.fillStyle = `rgba(13, 31, 20, ${progress})`;
+      ctx.fillRect(0, 0, W, H);
+      
+      const a = Math.min(progress * 1.5, 1);
+      const items = [
+        { label: 'BUILD COST', value: '$85K–110K', color: DIMENSION },
+        { label: 'RENTAL VALUE', value: '$1,400–1,800/mo', color: MONEY },
+        { label: 'ANNUAL GROSS', value: '$16,800–21,600', color: MONEY },
+        { label: 'YEAR 1 ROI', value: '15–20%', color: ACCENT },
+      ];
+      
+      const startY = H/2 - 80;
+      items.forEach((item, i) => {
+        const y = startY + i * 60;
+        const itemA = Math.max(0, Math.min((progress * items.length) - i, 1));
+        ctx.fillStyle = `rgba(102, 119, 102, ${itemA})`;
+        ctx.font = '13px Menlo';
+        ctx.textAlign = 'center';
+        ctx.fillText(item.label, W/2, y);
+        ctx.fillStyle = item.color.replace(')', `, ${itemA})`).replace('rgb', 'rgba');
+        ctx.font = 'bold 26px Menlo';
+        ctx.fillText(item.value, W/2, y + 28);
+      });
+    }
+  },
+  {
+    name: 'CTA',
+    narrator: "Complete plan set. Ready to permit. $997. Own it outright — build it once or build it a hundred times.",
+    draw(progress) {
+      const a = Math.min(progress * 1.5, 1);
+      ctx.fillStyle = `rgba(13, 31, 20, ${a})`;
+      ctx.fillRect(0, 0, W, H);
+      
+      ctx.fillStyle = `rgba(200, 150, 62, ${a})`;
+      ctx.font = 'bold 64px Menlo';
+      ctx.textAlign = 'center';
+      ctx.fillText('$997', W/2, H/2 - 20);
+      
+      ctx.fillStyle = `rgba(102, 119, 102, ${a})`;
+      ctx.font = '14px Menlo';
+      ctx.fillText('ONE-TIME · NO ROYALTIES · OWN IT OUTRIGHT', W/2, H/2 + 20);
+      
+      ctx.fillStyle = `rgba(88, 196, 221, ${a})`;
+      ctx.font = '16px Menlo';
+      ctx.fillText('invisiblemonsters.github.io/cascade-480', W/2, H/2 + 50);
+      
+      if (progress > 0.5) {
+        const na = Math.min((progress - 0.5) * 2, 1);
+        ctx.fillStyle = `rgba(102, 119, 102, ${na})`;
+        ctx.font = '13px Menlo';
+        ctx.fillText('⚡ Or zap 200K sats for instant delivery', W/2, H/2 + 78);
+      }
+    }
+  }
+];
+
+// ── Animation state ────────────────────────────────────
+let currentPhase = 0;
+let phaseProgress = 0;
+const PHASE_DURATION = 4000; // ms per phase
+let phaseStart = 0;
+const narrator = document.getElementById('narrator');
+const title = document.getElementById('title');
+const cta = document.getElementById('cta');
+
+function updateDots() {
+  document.querySelectorAll('.dot').forEach((dot, i) => {
+    dot.className = 'dot';
+    if (i < currentPhase) dot.classList.add('done');
+    if (i === currentPhase) dot.classList.add('active');
+  });
+}
+
+function animate(timestamp) {
+  if (!phaseStart) phaseStart = timestamp;
+  
+  const elapsed = timestamp - phaseStart;
+  phaseProgress = Math.min(elapsed / PHASE_DURATION, 1);
+  
+  // Clear
+  ctx.fillStyle = BG;
+  ctx.fillRect(0, 0, W, H);
+  
+  // Draw current phase
+  phases[currentPhase].draw(phaseProgress);
+  
+  // Update narrator
+  if (phaseProgress > 0.1) {
+    narrator.style.opacity = Math.min((phaseProgress - 0.1) * 2, 0.9);
+    narrator.textContent = phases[currentPhase].narrator;
+  }
+  
+  // Show title after first phase
+  if (currentPhase >= 1) {
+    title.style.opacity = '1';
+  }
+  
+  // Show CTA only in final phase
+  if (currentPhase === 5) {
+    cta.style.opacity = Math.min(phaseProgress * 1.5, 1);
+  } else {
+    cta.style.opacity = '0';
+  }
+  
+  // Advance phase
+  if (phaseProgress >= 1 && currentPhase < phases.length - 1) {
+    currentPhase++;
+    phaseStart = timestamp;
+    phaseProgress = 0;
+    narrator.style.opacity = '0';
+  }
+  
+  // Loop
+  if (currentPhase === phases.length - 1 && phaseProgress >= 1) {
+    // Pause at CTA for 3 seconds, then restart
+    if (elapsed > PHASE_DURATION + 3000) {
+      currentPhase = 0;
+      phaseStart = timestamp;
+      phaseProgress = 0;
+      title.style.opacity = '0';
+    }
+  }
+  
+  updateDots();
+  requestAnimationFrame(animate);
+}
+
+requestAnimationFrame(animate);
+
+// Handle resize
+window.addEventListener('resize', () => {
+  location.reload();
+});
+</script>
+</body>
+</html>
